@@ -29,6 +29,11 @@ config :phoenix, :json_library, Jason
 config :mindvalley,
   webhook_token: "xAH7RP3bhRwfySRgzeYcSmubgM4ONP"
 
+config :mindvalley,
+  messenger_profile_api: "https://graph.facebook.com/v7.0/me/messenger_profile",
+  messages: "https://graph.facebook.com/v7.0/me/messages",
+  graph: "https://graph.facebook.com"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
