@@ -29,3 +29,4 @@ mindvalley-*.tar
 .env
 
 config/dev.secret.exs
+chat_flow
