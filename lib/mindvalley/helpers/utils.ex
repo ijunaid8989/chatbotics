@@ -69,4 +69,12 @@ defmodule BuyIt.Utils do
     headers = [{"Content-type", "application/json"}]
     HTTPoison.post(@messages_api <> "?access_token=" <> @page_token, body, headers, [])
   end
+
+  def handle_random_message("GET_STARTED", psid, _message) do
+    quick_reply_to_payload(psid)
+  end
+  def handle_random_message("ASKED_FOR_GOOD_READ_DATA", psid, message) do
+    IO.inspect(message)
+    IO.inspect(psid)
+  end
 end

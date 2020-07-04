@@ -20,6 +20,7 @@ defmodule BuyIt.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: BuyIt.Supervisor]
+    :dets.open_file(:chat_flow, [type: :set])
     Supervisor.start_link(children, opts)
   end
 

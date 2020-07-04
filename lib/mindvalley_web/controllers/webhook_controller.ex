@@ -1,6 +1,7 @@
 defmodule BuyItWeb.WebhookController do
   use BuyItWeb, :controller
   import BuyIt.Utils
+  alias BuyIt.Steps
   require Logger
 
   @verify_token Application.get_env(:mindvalley, :webhook_token)
@@ -31,6 +32,7 @@ defmodule BuyItWeb.WebhookController do
     ],
     "object" => "page"
   }) do
+    Steps.save(psid, "GET_STARTED")
     quick_reply_to_payload(psid)
     send_resp(conn, :ok, "")
   end
@@ -49,10 +51,47 @@ defmodule BuyItWeb.WebhookController do
     ],
     "object" => "page"
   }) do
+    Steps.save(psid, "ASKED_FOR_GOOD_READ_DATA")
     handle_quick_payload(payload_of_quick_reply, psid)
     send_resp(conn, :ok, "")
   end
+  def create(conn, %{
+    "entry" => [
+      %{
+        "messaging" => [
+          %{
+            "message" => %{
+              "is_echo" => true
+            }
+          }
+        ]
+      }
+    ]
+  }) do
+    Logger.info("Resent the flow message.")
+    send_resp(conn, :ok, "")
+  end
+  def create(conn, %{
+    "entry" => [
+      %{
+        "messaging" => [
+          %{
+            "message" => %{
+              "text" => message
+            },
+            "sender" => %{"id" => psid},
+          }
+        ]
+      }
+    ],
+    "object" => "page"
+  }) do
+    Steps.get(psid)
+    |> handle_random_message(psid, message)
+    send_resp(conn, :ok, "")
+  end
   def create(conn, params) do
+    IO.inspect(params)
     send_resp(conn, :ok, "")
   end
 end
