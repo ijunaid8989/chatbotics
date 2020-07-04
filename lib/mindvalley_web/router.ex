@@ -9,5 +9,6 @@ defmodule BuyItWeb.Router do
     pipe_through :api
 
     get "/webhook", WebhookController, :verify
+    post "/webhook", WebhookController, :create
   end
 end
