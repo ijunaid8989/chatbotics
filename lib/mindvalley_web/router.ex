@@ -5,7 +5,9 @@ defmodule BuyItWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BuyItWeb do
+  scope "/v1", BuyItWeb do
     pipe_through :api
+
+    get "/webhook", WebhookController, :verify
   end
 end
