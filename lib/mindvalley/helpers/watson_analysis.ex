@@ -4,6 +4,14 @@ defmodule Buyit.WatsonAnalysis do
   @watson_api Application.get_env(:mindvalley, :watson_api)
 
   def analyse(text) do
+    model = %{
+      confidence: 0,
+      anger: 0,
+      disgust: 0,
+      joy: 0,
+      relevance: 0,
+      sentiments: []
+    }
     body = Jason.encode!(%{
       "text" => text,
       "features" => %{
@@ -20,14 +28,7 @@ defmodule Buyit.WatsonAnalysis do
          {:ok, data} <- Jason.decode(body)
     do
       data["entities"]
-      |> Enum.reduce(%{
-        confidence: 0,
-        anger: 0,
-        disgust: 0,
-        joy: 0,
-        relevance: 0,
-        sentiments: []
-      }, fn entity, map ->
+      |> Enum.reduce(model, fn entity, map ->
         %{
           "confidence" => confidence,
           "emotion" => %{
@@ -48,7 +49,7 @@ defmodule Buyit.WatsonAnalysis do
         }
       end)
     else
-      _ -> "Unknown"
+      _ -> model
     end
   end
 end
