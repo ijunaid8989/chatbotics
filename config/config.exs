@@ -32,7 +32,8 @@ config :mindvalley,
 config :mindvalley,
   messenger_profile_api: "https://graph.facebook.com/v7.0/me/messenger_profile",
   messages: "https://graph.facebook.com/v7.0/me/messages",
-  graph: "https://graph.facebook.com"
+  graph: "https://graph.facebook.com",
+  watson_api: "https://api.eu-de.natural-language-understanding.watson.cloud.ibm.com/instances/875fd885-e131-42ab-8d30-60527352a78d/v1/analyze?version=2019-07-12"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
