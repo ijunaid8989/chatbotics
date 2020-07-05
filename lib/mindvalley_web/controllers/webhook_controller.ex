@@ -51,7 +51,7 @@ defmodule BuyItWeb.WebhookController do
     ],
     "object" => "page"
   }) do
-    Steps.save(psid, "ASKED_FOR_GOOD_READ_DATA")
+    Steps.save(psid, "ASKED_FOR_GOOD_READ_DATA", payload_of_quick_reply)
     handle_quick_payload(payload_of_quick_reply, psid)
     send_resp(conn, :ok, "")
   end
