@@ -43,6 +43,18 @@ defmodule BuyIt.Utils do
   def handle_quick_payload("SEARCH_BY_NAME", psid), do: general_reply(psid, "Please enter name of the book.")
   def handle_quick_payload("SEARCH_BY_ID", psid), do: general_reply(psid, "Please enter the ID (Goodreads ID) of the book.")
 
+  #mark_seen, typing_on, typing_off
+  def set_typing(psid, action) do
+    body = Jason.encode!(%{
+      "recipient" => %{
+        "id" => psid
+      },
+      "sender_action" => action
+    })
+    headers = [{"Content-type", "application/json"}]
+    HTTPoison.post(@messages_api <> "?access_token=" <> @page_token, body, headers, [])
+  end
+
   def quick_reply_to_payload(psid) do
     user_first_name = user_info(psid)
     body = Jason.encode!(%{
@@ -70,11 +82,12 @@ defmodule BuyIt.Utils do
     HTTPoison.post(@messages_api <> "?access_token=" <> @page_token, body, headers, [])
   end
 
-  def handle_random_message("GET_STARTED", psid, _message) do
+  def handle_random_message({"GET_STARTED", _payload}, psid, _message) do
     quick_reply_to_payload(psid)
   end
-  def handle_random_message("ASKED_FOR_GOOD_READ_DATA", psid, message) do
+  def handle_random_message({"ASKED_FOR_GOOD_READ_DATA", [payload]}, psid, message) do
     IO.inspect(message)
+    IO.inspect(payload)
     IO.inspect(psid)
   end
 end

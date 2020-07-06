@@ -33,7 +33,8 @@ defmodule BuyItWeb.WebhookController do
     "object" => "page"
   }) do
     Steps.save(psid, "GET_STARTED")
-    quick_reply_to_payload(psid)
+    set_typing(psid, "typing_on")
+    spawn(fn -> quick_reply_to_payload(psid) end)
     send_resp(conn, :ok, "")
   end
   def create(conn, %{
@@ -52,7 +53,8 @@ defmodule BuyItWeb.WebhookController do
     "object" => "page"
   }) do
     Steps.save(psid, "ASKED_FOR_GOOD_READ_DATA", payload_of_quick_reply)
-    handle_quick_payload(payload_of_quick_reply, psid)
+    set_typing(psid, "typing_on")
+    spawn(fn -> handle_quick_payload(payload_of_quick_reply, psid) end)
     send_resp(conn, :ok, "")
   end
   def create(conn, %{
@@ -86,6 +88,7 @@ defmodule BuyItWeb.WebhookController do
     ],
     "object" => "page"
   }) do
+    set_typing(psid, "typing_on")
     Steps.get(psid)
     |> handle_random_message(psid, message)
     send_resp(conn, :ok, "")
