@@ -44,7 +44,7 @@ defmodule BuyIt.Utils do
   def handle_quick_payload("SEARCH_BY_ID", psid), do: general_reply(psid, "Please enter the ID (Goodreads ID) of the book.")
 
   #mark_seen, typing_on, typing_off
-  def set_typing(psid, action) do
+  def set_typing(psid, action \\ "mark_seen") do
     body = Jason.encode!(%{
       "recipient" => %{
         "id" => psid

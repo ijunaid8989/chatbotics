@@ -33,7 +33,7 @@ defmodule BuyItWeb.WebhookController do
     "object" => "page"
   }) do
     Steps.save(psid, "GET_STARTED")
-    set_typing(psid, "typing_on")
+    set_typing(psid)
     spawn(fn -> quick_reply_to_payload(psid) end)
     send_resp(conn, :ok, "")
   end
